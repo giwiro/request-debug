@@ -17,12 +17,8 @@ type Config struct {
 		Level string
 	}
 	Database struct {
-		Host     string
-		Port     int
-		User     string
-		Password string
-		DBName   string
-		Schema   string
+		Uri    string
+		DBName string
 	}
 	App struct {
 		Name string

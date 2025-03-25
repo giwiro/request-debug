@@ -6,7 +6,9 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/recover"
 	"request-debug/config"
+	"request-debug/database"
 	"request-debug/logger"
+	requestGroupWeb "request-debug/modules/request-group/web"
 	versionWeb "request-debug/modules/version/web"
 	"request-debug/utils"
 )
@@ -22,11 +24,16 @@ func main() {
 	logger.Logger.Info().Msg("Using following environment variables: ")
 	logger.Logger.Info().Msgf("  └── REQUEST_DEBUG_CONFIG_PATH=%s", configPath)
 
+	mongoDB := database.NewMongoDB()
+
 	app := setUpApp(config.NewFiberConfiguration())
 	mainRouter := app.Group(config.Conf.Server.BasePath)
 
 	versionRouter := versionWeb.NewVersionRouter()
 	versionRouter.RegisterRoutes(mainRouter)
+
+	requestGroupRouter := requestGroupWeb.NewRequestGroupRouter(mongoDB)
+	requestGroupRouter.RegisterRoutes(mainRouter)
 
 	addr := fmt.Sprintf("%s:%s", config.Conf.Server.Address, config.Conf.Server.Port)
 	logger.Logger.Info().Msgf("Listening: %s%s", addr, config.Conf.Server.BasePath)
