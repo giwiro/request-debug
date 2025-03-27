@@ -7,10 +7,34 @@ import (
 	"request-debug/logger"
 	"request-debug/modules/error/exc"
 	requestgroup "request-debug/modules/request-group"
+	"request-debug/modules/request-group/model"
+	"time"
 )
 
 type RequestGroupController struct {
 	requestGroupUseCase requestgroup.RequestGroupUseCase
+}
+
+func (vc *RequestGroupController) CreateRequestGroup(c *fiber.Ctx) error {
+	ctx := c.UserContext()
+
+	requestGroup := &model.RequestGroup{
+		Requests:  []model.Request{},
+		CreateAt:  time.Now().UTC(),
+		UpdatedAt: time.Now().UTC(),
+	}
+
+	rg, err := vc.requestGroupUseCase.CreateRequestGroup(
+		ctx,
+		requestGroup,
+	)
+	if err != nil {
+		return exc.InternalError{
+			Message: "Could not create request_group",
+		}
+	}
+
+	return c.Status(fiber.StatusOK).JSON(rg)
 }
 
 func (vc *RequestGroupController) GetRequestGroup(c *fiber.Ctx) error {
@@ -18,13 +42,13 @@ func (vc *RequestGroupController) GetRequestGroup(c *fiber.Ctx) error {
 	ctx := c.UserContext()
 
 	if err := c.ParamsParser(&webRequest); err != nil {
-		logger.Error(ctx, err.Error())
+		logger.Logger.Err(err)
 		return err
 	}
 
 	val := validator.New()
 	if err := val.Struct(webRequest); err != nil {
-		logger.Error(ctx, err.Error())
+		logger.Logger.Err(err)
 		return err
 	}
 
@@ -34,6 +58,8 @@ func (vc *RequestGroupController) GetRequestGroup(c *fiber.Ctx) error {
 			RequestGroupId: webRequest.RequestGroupId,
 		})
 	if err != nil {
+		fmt.Println(err.Error())
+		logger.Logger.Err(err)
 		return exc.InternalError{
 			Message: fmt.Sprintf("Could not get request_group %s", webRequest.RequestGroupId),
 		}
@@ -43,8 +69,6 @@ func (vc *RequestGroupController) GetRequestGroup(c *fiber.Ctx) error {
 			Message: fmt.Sprintf("request_group %s not found", webRequest.RequestGroupId),
 		}
 	}
-
-	fmt.Println("3")
 
 	return c.Status(fiber.StatusOK).JSON(rg)
 }
