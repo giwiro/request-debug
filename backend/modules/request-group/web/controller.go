@@ -72,3 +72,7 @@ func (vc *RequestGroupController) GetRequestGroup(c *fiber.Ctx) error {
 
 	return c.Status(fiber.StatusOK).JSON(rg)
 }
+
+func (vc *RequestGroupController) CreateRequest(c *fiber.Ctx) error {
+	panic("Not implemented")
+}
