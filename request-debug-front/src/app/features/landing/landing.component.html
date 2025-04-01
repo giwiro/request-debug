@@ -1,0 +1,22 @@
+<p>landing works!</p>
+<p>isLoading: {{ store.isLoading() }}</p>
+
+<br />
+<br />
+
+@if (storedGroupService.storedRequestGroupId) {
+  <a
+    [routerLink]="'/dashboard/' + storedGroupService.storedRequestGroupId"
+    role="button"
+    class="btn btn-secondary">
+    Go
+  </a>
+} @else {
+  <button
+    type="button"
+    class="btn btn-primary"
+    (click)="onCreate()"
+    [disabled]="store.isLoading()">
+    Create
+  </button>
+}

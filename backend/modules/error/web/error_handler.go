@@ -50,8 +50,8 @@ func ErrorHandler(ctx *fiber.Ctx, err error) error {
 
 	var notFoundError exc.NotFoundError
 	if errors.As(err, &notFoundError) {
-		httpError.Status = fiber.StatusBadRequest
-		return ctx.Status(fiber.StatusBadRequest).JSON(httpError)
+		httpError.Status = fiber.StatusNotFound
+		return ctx.Status(fiber.StatusNotFound).JSON(httpError)
 	}
 
 	var unauthorizedError exc.UnauthorizedError

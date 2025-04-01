@@ -1,9 +1,12 @@
 package web
 
 import (
+	"errors"
 	"fmt"
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
+	"go.mongodb.org/mongo-driver/v2/bson"
+	"go.mongodb.org/mongo-driver/v2/mongo"
 	"request-debug/logger"
 	"request-debug/modules/error/exc"
 	requestgroup "request-debug/modules/request-group"
@@ -42,13 +45,13 @@ func (vc *RequestGroupController) GetRequestGroup(c *fiber.Ctx) error {
 	ctx := c.UserContext()
 
 	if err := c.ParamsParser(&webRequest); err != nil {
-		logger.Logger.Err(err)
+		logger.Logger.Err(err).Msg(fmt.Sprintf("Could not get request_group %s", webRequest.RequestGroupId))
 		return err
 	}
 
 	val := validator.New()
 	if err := val.Struct(webRequest); err != nil {
-		logger.Logger.Err(err)
+		logger.Logger.Err(err).Msg(fmt.Sprintf("Could not get request_group %s", webRequest.RequestGroupId))
 		return err
 	}
 
@@ -58,8 +61,20 @@ func (vc *RequestGroupController) GetRequestGroup(c *fiber.Ctx) error {
 			RequestGroupId: webRequest.RequestGroupId,
 		})
 	if err != nil {
-		fmt.Println(err.Error())
-		logger.Logger.Err(err)
+		logger.Logger.Err(err).Msg(fmt.Sprintf("Could not get request_group %s", webRequest.RequestGroupId))
+
+		if errors.Is(err, bson.ErrInvalidHex) {
+			return exc.ValidationError{
+				Message: fmt.Sprintf("Could not get request_group %s", webRequest.RequestGroupId),
+			}
+		}
+
+		if errors.Is(err, mongo.ErrNoDocuments) {
+			return exc.NotFoundError{
+				Message: fmt.Sprintf("Could not get request_group %s", webRequest.RequestGroupId),
+			}
+		}
+
 		return exc.InternalError{
 			Message: fmt.Sprintf("Could not get request_group %s", webRequest.RequestGroupId),
 		}
