@@ -9,7 +9,7 @@
     [routerLink]="'/dashboard/' + storedGroupService.storedRequestGroupId"
     role="button"
     class="btn btn-secondary">
-    Go
+    Go to {{ storedGroupService.storedRequestGroupId }}
   </a>
 } @else {
   <button
@@ -18,5 +18,8 @@
     (click)="onCreate()"
     [disabled]="store.isLoading()">
     Create
+    @if (store.isLoading()) {
+      <span class="loading loading-spinner loading-sm"></span>
+    }
   </button>
 }

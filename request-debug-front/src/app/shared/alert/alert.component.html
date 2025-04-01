@@ -1,0 +1,17 @@
+<div
+  class="w-full h-screen fixed -z-1 p-4 flex flex-col-reverse items-end gap-4">
+  @for (alert of alertService.alerts(); track alert.id) {
+    <div
+      class="max-w-130 alert items-center gap-4 flex"
+      [class]="getAlertTypeClass(alert.type)"
+      role="alert">
+      {{ alert.message }}
+      <button
+        (click)="alertService.deleteAlert(alert.id)"
+        class="ms-auto cursor-pointer leading-none"
+        aria-label="Close Button">
+        <span class="icon-[tabler&#45;&#45;x] size-5"></span>
+      </button>
+    </div>
+  }
+</div>

@@ -1,5 +1,7 @@
-<p>dashboard works!</p>
+@if (store.isLoading()) {
+  <span class="loading loading-spinner loading-xl"></span>
+}
 
-<p>isLoading: {{ store.isLoading() }}</p>
-
-<p>requestGroup: {{ store.requestGroup() | json }}</p>
+@if (store.requestGroup()) {
+  <p>requestGroup: {{ store.requestGroup() | json }}</p>
+}
