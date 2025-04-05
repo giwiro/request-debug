@@ -5,6 +5,8 @@ import {catchError, of, retry, tap, throwError} from 'rxjs';
 import {StoredGroupService} from '../stored-group/stored-group.service';
 import {Router} from '@angular/router';
 import {NotifiableError} from '../../../../core/error/exc';
+import {AlertType} from '../../../../shared/alert/model';
+import {AlertService} from '../../../../shared/alert/service/alert.service';
 
 @Injectable({
   providedIn: 'root',
@@ -13,10 +15,11 @@ export class RequestGroupService {
   private http = inject(HttpClient);
   private storedGroupService = inject(StoredGroupService);
   private router = inject(Router);
+  private alertService = inject(AlertService);
 
   getRequestGroup(id: string) {
     return this.http.get<RequestGroup>(`/api/request/group/${id}`).pipe(
-      retry({
+      /*retry({
         count: 1,
         delay: (error: HttpErrorResponse) => {
           if (error.status === 500) {
@@ -24,23 +27,27 @@ export class RequestGroupService {
           }
           return throwError(() => error);
         },
-      }),
-      catchError((err: HttpErrorResponse) => {
+      }),*/
+      catchError((error: HttpErrorResponse) => {
         if (
-          err.status === 404 &&
+          error.status === 404 &&
           id === this.storedGroupService.storedRequestGroupId
         ) {
           this.storedGroupService.storedRequestGroupId = null;
         }
 
-        this.router
+        /*this.router
           .navigate(['/'])
           .then(() => console.log(`Redirecting to '/'`))
-          .catch(() => console.log("Could not redirect to '/'"));
+          .catch(() => console.log("Could not redirect to '/'"));*/
 
-        return throwError(
-          () => new NotifiableError(`Could not get request group ${id}`)
-        );
+        this.alertService.triggerAlert({
+          type: AlertType.Error,
+          message: `Could not get request group ${id}`,
+          // closeAfter: 2500,
+        });
+
+        return throwError(() => error);
       })
     );
   }
@@ -58,6 +65,15 @@ export class RequestGroupService {
           .catch(() =>
             console.log(`Could not redirect to '/dashboard/${requestGroup.id}'`)
           );
+      }),
+      catchError((error: HttpErrorResponse) => {
+        this.alertService.triggerAlert({
+          type: AlertType.Error,
+          message: 'Could not get create group',
+          // closeAfter: 2500,
+        });
+
+        return throwError(() => error);
       })
     );
   }

@@ -5,7 +5,6 @@ import {inject} from '@angular/core';
 import {RequestGroupService} from '../service/request-group/request-group.service';
 import {rxMethod} from '@ngrx/signals/rxjs-interop';
 import {exhaustMap, pipe, tap} from 'rxjs';
-import {NotifiableError} from '../../../core/error/exc';
 
 interface RequestGroupStoreState {
   isLoading: boolean;
@@ -45,13 +44,8 @@ export const RequestGroupStore = signalStore(
             tapResponse({
               next: requestGroup =>
                 patchState(store, {requestGroup, isLoading: false}),
-              error: (error: Error) => {
+              error: () => {
                 patchState(store, {isLoading: false});
-
-                // This will notify to the ErrorHandler
-                if (error instanceof NotifiableError) {
-                  throw error;
-                }
               },
             })
           );

@@ -7,6 +7,7 @@ import (
 	"request-debug/database"
 	"request-debug/modules/request-group/dao"
 	"request-debug/modules/request-group/model"
+	"time"
 )
 
 type RequestGroupDao interface {
@@ -57,7 +58,22 @@ func (r *requestGroupDao) CreateGroup(ctx context.Context, requestGroup *model.R
 	return requestGroup, nil
 }
 
-func (r *requestGroupDao) CreateRequest(ctx context.Context, groupId string, request *model.Request) (*model.Request, error) {
-	//TODO implement me
-	panic("implement me")
+func (r *requestGroupDao) CreateRequest(ctx context.Context, groupId string, request *model.Request) (*model.RequestGroup, error) {
+	var requestGroup model.RequestGroup
+	objID, err := bson.ObjectIDFromHex(groupId)
+	if err != nil {
+		return nil, err
+	}
+
+	filter := bson.D{{"_id", objID}}
+	update := bson.M{"$set": bson.M{"updatedAt": time.Now().UTC()}, "$push": bson.M{"requests": request}}
+
+	coll := database.GetCollection(r.db, "requestGroups")
+
+	err = coll.FindOneAndUpdate(ctx, filter, update).Decode(&requestGroup)
+	if err != nil {
+		return nil, err
+	}
+
+	return &requestGroup, nil
 }

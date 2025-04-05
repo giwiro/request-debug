@@ -28,10 +28,7 @@ export class AlertService {
             );
             this._alerts.update(() => filteredAlerts);
           } else if (operation === 'CREATE' && createAlert) {
-            this._alerts.update(a => {
-              console.log('a', [...a, createAlert]);
-              return [...a, createAlert];
-            });
+            this._alerts.update(a => [...a, createAlert]);
           }
 
           return of(op);

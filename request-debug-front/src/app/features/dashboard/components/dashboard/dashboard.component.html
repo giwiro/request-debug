@@ -1,0 +1,77 @@
+<nav class="navbar z-10 relative">
+  <div class="w-full md:flex md:items-center md:gap-2">
+    <div class="flex items-center justify-between">
+      <div class="navbar-start items-center justify-between max-md:w-full">
+        <a
+          class="link text-base-content link-neutral text-xl font-bold no-underline"
+          [routerLink]="'/'"
+          >RequestDebug</a
+        >
+      </div>
+    </div>
+  </div>
+</nav>
+<nav
+  class="navbar bg-base-100 max-sm:rounded-box max-sm:shadow-sm sm:border-b border-base-content/25 sm:z-1 relative">
+  <button
+    type="button"
+    class="btn btn-text max-sm:btn-square sm:hidden me-2"
+    aria-haspopup="dialog"
+    aria-expanded="false"
+    aria-controls="with-navbar-sidebar"
+    data-overlay="#with-navbar-sidebar">
+    <span class="icon-[tabler--menu-2] size-5"></span>
+  </button>
+  <div class="flex flex-1 items-center">
+    <div class="breadcrumbs">
+      <ul>
+        <li aria-current="page">
+          <a class="text-base-content text-sm" [routerLink]="'/'"> Home </a>
+        </li>
+        <li class="breadcrumbs-separator rtl:rotate-180">
+          <span class="icon-[tabler--chevron-right]"></span>
+        </li>
+        <li>
+          <a
+            class="text-base-content text-sm"
+            [class.font-semibold]="!requestId()"
+            [routerLink]="'/dashboard/' + groupId()">
+            {{ groupId() }}
+          </a>
+        </li>
+        @if (requestId()) {
+          <li class="breadcrumbs-separator rtl:rotate-180">
+            <span class="icon-[tabler--chevron-right]"></span>
+          </li>
+        }
+        <li aria-current="page">
+          <span class="text-base-content text-sm font-semibold">
+            {{ requestId() }}
+          </span>
+        </li>
+      </ul>
+    </div>
+    <!--<span
+      class="text-base-content text-sm font-semibold">
+      {{ groupId }}
+    </span>-->
+  </div>
+</nav>
+
+<div>
+  <app-sidebar [requestGroup]="store.requestGroup()" />
+  <section
+    class="sm:pl-64 overflow-x-hidden overflow-y-auto h-[calc(100vh-6rem)]">
+    @if (store.isLoading()) {
+      <span class="loading loading-spinner loading-xl"></span>
+    }
+
+    <!--@if (store.requestGroup()) {
+      <p>requestGroup: {{ store.requestGroup() | json }}</p>
+    }-->
+
+    <router-outlet
+      (activate)="routeActivated($event)"
+      (deactivate)="routeDeactivated()" />
+  </section>
+</div>

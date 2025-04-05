@@ -29,5 +29,6 @@ func (rgr *requestGroupRouter) RegisterRoutes(router fiber.Router) {
 	r := router.Group("/request")
 	r.Post("/", rgc.CreateRequest)
 	r.Post("/group", rgc.CreateRequestGroup)
+	r.Use("/group/:request_group_id/request", rgc.CreateRequest)
 	r.Get("/group/:request_group_id", rgc.GetRequestGroup)
 }

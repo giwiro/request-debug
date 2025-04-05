@@ -11,7 +11,7 @@ export class CustomErrorHandler implements ErrorHandler {
       this.alertService.triggerAlert({
         type: AlertType.Error,
         message: error.message,
-        closeAfter: 2500,
+        // closeAfter: 2500,
       });
     } else {
       console.error(error);
