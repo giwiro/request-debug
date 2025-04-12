@@ -1,12 +1,22 @@
-import {Component, computed, inject, OnInit, signal} from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+  OnInit,
+  signal,
+} from '@angular/core';
 import {Request} from '../../../../core/models';
 import {RequestGroupStore} from '../../store/request-group.store';
 import {ActivatedRoute} from '@angular/router';
-import {JsonPipe} from '@angular/common';
+import {BadgeComponent} from '../../../../shared/badge/badge.component';
+import {DatePipe} from '@angular/common';
+import {DateAgoPipe} from '../../../../shared/date-ago/date-ago.pipe';
 
 @Component({
   selector: 'app-request',
-  imports: [JsonPipe],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [BadgeComponent, DatePipe, DateAgoPipe],
   templateUrl: './request.component.html',
   styleUrl: './request.component.css',
 })
@@ -22,6 +32,18 @@ export class RequestComponent implements OnInit {
     }
 
     return undefined;
+  });
+  headers = computed(() => {
+    const request = this.request();
+    if (!request || !request.headers) return undefined;
+
+    return new Map(Object.entries(request.headers));
+  });
+  queryParams = computed(() => {
+    const request = this.request();
+    if (!request || !request.queryParams) return undefined;
+
+    return new Map(Object.entries(request.queryParams));
   });
 
   ngOnInit() {

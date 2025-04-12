@@ -1,0 +1,21 @@
+<span
+  class="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset"
+  [class]="{
+    'text-green-700': method() === 'GET',
+    'ring-green-600/20': method() === 'GET',
+    'bg-green-50': method() === 'GET',
+    'text-blue-700': method() === 'POST',
+    'bg-blue-50': method() === 'POST',
+    'ring-blue-700/10': method() === 'POST',
+    'text-red-700': method() === 'DELETE',
+    'ring-red-600/10': method() === 'DELETE',
+    'bg-red-50': method() === 'DELETE',
+    'text-gray-600': method() === 'OPTIONS',
+    'ring-gray-500/10': method() === 'OPTIONS',
+    'bg-gray-50': method() === 'OPTIONS',
+    'text-purple-700': method() === 'PUT',
+    'ring-purple-700/10': method() === 'PUT',
+    'bg-purple-50': method() === 'PUT',
+  }">
+  {{ method() }}
+</span>

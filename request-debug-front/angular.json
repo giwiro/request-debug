@@ -25,7 +25,11 @@
               }
             ],
             "styles": ["src/styles.css"],
-            "scripts": ["node_modules/flyonui/flyonui.js"]
+            "scripts": [
+              "node_modules/clipboard/dist/clipboard.js",
+              "node_modules/flyonui/flyonui.js",
+              "node_modules/flyonui/dist/helper-clipboard.js"
+            ]
           },
           "configurations": {
             "production": {

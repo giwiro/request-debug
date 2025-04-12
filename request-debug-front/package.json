@@ -21,6 +21,7 @@
     "@ngrx/operators": "^19.0.1",
     "@ngrx/signals": "^19.0.1",
     "@tailwindcss/postcss": "^4.0.17",
+    "clipboard": "^2.0.11",
     "flyonui": "^2.0.1",
     "postcss": "^8.5.3",
     "rxjs": "~7.8.0",

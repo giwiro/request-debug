@@ -1,1 +1,45 @@
-<p>request-landing works!</p>
+<section
+  class="p-6 xl:p-12 flex justify-center"
+  [class.hidden]="!store.requestGroup()">
+  <div class="max-w-full sm:max-w-160 w-full">
+    <h5 class="text-base-content text-lg font-semibold mb-2">Unique URL</h5>
+    <div
+      class="rounded-box inline-flex items-center gap-1 p-1 shadow-base-300/20 shadow-sm w-full max-w-full">
+      <code
+        id="clipboard-unique-url"
+        class="px-2 text-base-content text-sm font-medium overflow-hidden text-ellipsis w-full"
+        >{{ uniqueUrl() }}</code
+      >
+      <button
+        type="button"
+        class="js-clipboard tooltip btn btn-square btn-text"
+        aria-label="Copy text to clipboard"
+        data-clipboard-target="#clipboard-unique-url"
+        data-clipboard-action="copy"
+        data-clipboard-success-text="Copied!">
+        <span class="tooltip-toggle flex items-center justify-center">
+          <span
+            class="js-clipboard-default icon-[tabler--clipboard] size-6 transition"></span>
+          <span
+            class="js-clipboard-success icon-[tabler--clipboard-check] text-primary hidden size-6"></span>
+        </span>
+        <span
+          class="tooltip-content tooltip-shown:opacity-100 tooltip-shown:visible"
+          role="tooltip">
+          <span class="tooltip-body js-clipboard-success-text">Copy</span>
+        </span>
+      </button>
+    </div>
+
+    <div class="divider mt-10 mb-10"></div>
+
+    <h5 class="text-base-content text-lg font-semibold mb-2">Star on Github</h5>
+    <iframe
+      src="https://ghbtns.com/github-btn.html?user=giwiro&repo=request-debug&type=star&count=false&size=large"
+      frameborder="0"
+      scrolling="0"
+      width="75"
+      height="30"
+      title="GitHub"></iframe>
+  </div>
+</section>

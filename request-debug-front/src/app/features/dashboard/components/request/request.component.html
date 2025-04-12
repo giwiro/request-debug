@@ -1,1 +1,155 @@
-<pre>{{ request() | json }}</pre>
+<section
+  class="p-6 xl:p-12"
+  [class.hidden]="!store.requestGroup() || !request()">
+  <div class="w-full">
+    <div class="grid grid-cols-1 xl:grid-cols-2 gap-8 items-start">
+      <div>
+        <h5 class="text-base-content text-lg font-semibold mb-2">
+          Request details
+        </h5>
+        <table class="table-striped table-xs table table-fixed">
+          <tbody>
+            <tr>
+              <td class="w-20"><app-badge [method]="request()?.method" /></td>
+              <td
+                class="w-full overflow-hidden break-words whitespace-nowrap overflow-ellipsis hover:whitespace-normal">
+                <a
+                  href="{{ request()?.url }}"
+                  target="_blank"
+                  class="link link-accent inline"
+                  >{{ request()?.url }}</a
+                >
+              </td>
+            </tr>
+            <tr>
+              <td class="w-20">ID</td>
+              <td
+                class="w-full overflow-hidden whitespace-nowrap overflow-ellipsis hover:whitespace-normal">
+                {{ request()?.id }}
+              </td>
+            </tr>
+            <tr>
+              <td class="w-20">IP</td>
+              <td class="w-full break-words whitespace-break-spaces">
+                <span
+                  class="bg-gray-100 text-gray-800 text-xs font-medium me-2 px-1.5 py-0.5 rounded-sm">
+                  <code>{{ request()?.ip }}</code>
+                </span>
+                <a
+                  href="https://whois.domaintools.com/{{ request()?.ip }}"
+                  target="_blank"
+                  class="link link-accent px-2"
+                  >Whois</a
+                >
+                <a
+                  href="https://www.shodan.io/host/{{ request()?.ip }}"
+                  target="_blank"
+                  class="link link-accent px-2"
+                  >Shodan</a
+                >
+                <a
+                  href="https://www.virustotal.com/gui/ip-address/120.22.136.44{{
+                    request()?.ip
+                  }}/relations"
+                  target="_blank"
+                  class="link link-accent px-2"
+                  >VirusTotal</a
+                >
+              </td>
+            </tr>
+            <tr>
+              <td class="w-20">Date</td>
+              <td
+                class="w-full overflow-hidden whitespace-nowrap overflow-ellipsis hover:whitespace-normal">
+                {{ request()?.date | date: 'short' }} ({{
+                  request()?.date | dateAgo
+                }})
+              </td>
+            </tr>
+            <tr>
+              <td class="w-20">Body size</td>
+              <td
+                class="w-full overflow-hidden whitespace-nowrap overflow-ellipsis hover:whitespace-normal">
+                {{ request()?.bodySize }} bytes
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div>
+        <h5 class="text-base-content text-lg font-semibold mb-2">Headers</h5>
+        @if (headers()) {
+          <table class="table-striped table-xs table table-fixed">
+            <tbody>
+              @for (header of headers(); track header[0]) {
+                <tr>
+                  <td class="w-3/4 sm:w-2/4">
+                    <span class="break-words whitespace-normal">{{
+                      header[0]
+                    }}</span>
+                  </td>
+                  <td
+                    class="w-full overflow-hidden whitespace-nowrap overflow-ellipsis hover:whitespace-normal">
+                    <span
+                      class="bg-gray-100 text-gray-800 text-xs font-medium px-1.5 py-0.5 rounded-sm">
+                      <code>{{ header[1] }}</code>
+                    </span>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        } @else {
+          <small><code>Empty</code></small>
+        }
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 xl:grid-cols-2 gap-8 items-start mt-5">
+      <div>
+        <h5 class="text-base-content text-lg font-semibold mb-2">
+          Query Params
+        </h5>
+        @if (queryParams()) {
+          <table class="table-striped table-xs table table-fixed">
+            <tbody>
+              @for (queryParam of queryParams(); track queryParam[0]) {
+                <tr>
+                  <td class="w-3/4 sm:w-2/4">
+                    <span class="break-words whitespace-normal">{{
+                      queryParam[0]
+                    }}</span>
+                  </td>
+                  <td
+                    class="w-full overflow-hidden whitespace-nowrap overflow-ellipsis hover:whitespace-normal">
+                    <span
+                      class="bg-gray-100 text-gray-800 text-xs font-medium px-1.5 py-0.5 rounded-sm">
+                      <code>{{ queryParam[1] }}</code>
+                    </span>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        } @else {
+          <small><code>Empty</code></small>
+        }
+      </div>
+    </div>
+
+    <div class="divider my-10"></div>
+
+    <div class="mt-5">
+      <h5 class="text-base-content text-lg font-semibold">Raw content</h5>
+
+      @if (request()?.bodyRaw) {
+        <div class="mockup-code before:content-none">
+          <pre><code>{{ request()?.bodyRaw }}</code></pre>
+        </div>
+      } @else {
+        <small><code>Empty</code></small>
+      }
+    </div>
+  </div>
+</section>

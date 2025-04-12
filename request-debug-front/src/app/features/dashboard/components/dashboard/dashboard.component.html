@@ -11,11 +11,10 @@
     </div>
   </div>
 </nav>
-<nav
-  class="navbar bg-base-100 max-sm:rounded-box max-sm:shadow-sm sm:border-b border-base-content/25 sm:z-1 relative">
+<nav class="navbar bg-base-100 shadow-sm xl:z-1 relative">
   <button
     type="button"
-    class="btn btn-text max-sm:btn-square sm:hidden me-2"
+    class="btn btn-text max-sm:btn-square xl:hidden me-2"
     aria-haspopup="dialog"
     aria-expanded="false"
     aria-controls="with-navbar-sidebar"
@@ -33,7 +32,7 @@
         </li>
         <li>
           <a
-            class="text-base-content text-sm"
+            class="text-base-content text-sm overflow-hidden whitespace-nowrap overflow-ellipsis max-w-20 sm:max-w-none !inline-block"
             [class.font-semibold]="!requestId()"
             [routerLink]="'/dashboard/' + groupId()">
             {{ groupId() }}
@@ -45,7 +44,8 @@
           </li>
         }
         <li aria-current="page">
-          <span class="text-base-content text-sm font-semibold">
+          <span
+            class="text-base-content text-sm font-semibold overflow-hidden whitespace-nowrap overflow-ellipsis max-w-20 sm:max-w-none !inline-block">
             {{ requestId() }}
           </span>
         </li>
@@ -59,11 +59,15 @@
 </nav>
 
 <div>
-  <app-sidebar [requestGroup]="store.requestGroup()" />
+  <app-sidebar
+    [requestGroup]="store.requestGroup()"
+    [requestId]="requestId()" />
   <section
-    class="sm:pl-64 overflow-x-hidden overflow-y-auto h-[calc(100vh-6rem)]">
+    class="xl:pl-80 overflow-x-hidden overflow-y-auto xl:h-[calc(100vh-7rem)]">
     @if (store.isLoading()) {
-      <span class="loading loading-spinner loading-xl"></span>
+      <section class="!pt-24 p-6 xl:p-12 flex justify-center">
+        <span class="loading loading-spinner loading-xl"></span>
+      </section>
     }
 
     <!--@if (store.requestGroup()) {
