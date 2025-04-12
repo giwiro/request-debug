@@ -10,3 +10,8 @@ type CreateRequestRequest struct {
 	RequestGroupId string
 	Request        *model.Request
 }
+
+type DeleteRequestRequest struct {
+	RequestGroupId string
+	RequestId      string
+}

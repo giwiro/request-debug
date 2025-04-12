@@ -4,13 +4,16 @@ import (
 	"fmt"
 	"github.com/gofiber/contrib/fiberzerolog"
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/recover"
 	"request-debug/config"
 	"request-debug/database"
 	"request-debug/logger"
 	requestGroupWeb "request-debug/modules/request-group/web"
+	"request-debug/modules/sse"
 	versionWeb "request-debug/modules/version/web"
 	"request-debug/utils"
+	"strings"
 )
 
 func main() {
@@ -25,15 +28,33 @@ func main() {
 	logger.Logger.Info().Msgf("  └── REQUEST_DEBUG_CONFIG_PATH=%s", configPath)
 
 	mongoDB := database.NewMongoDB()
+	sseBroker := sse.NewBroker()
 
 	app := setUpApp(config.NewFiberConfiguration())
+	baseRouter := app.Group("/")
 	mainRouter := app.Group(config.Conf.Server.BasePath)
+
+	// CORS
+	if len(config.Conf.Cors.Url) > 0 {
+		allowedOrigins := strings.Join(config.Conf.Cors.Url, ",")
+		logger.Logger.Info().Msgf("CORS: %s", allowedOrigins)
+
+		mainRouter.Use(cors.New(cors.Config{
+			AllowOrigins: allowedOrigins,
+			AllowHeaders: "Cache-Control",
+		}))
+	}
 
 	versionRouter := versionWeb.NewVersionRouter()
 	versionRouter.RegisterRoutes(mainRouter)
 
-	requestGroupRouter := requestGroupWeb.NewRequestGroupRouter(mongoDB)
+	baseRequestGroupRouter := requestGroupWeb.NewBaseRequestGroupRouter(mongoDB, sseBroker)
+	baseRequestGroupRouter.RegisterRoutes(baseRouter)
+
+	requestGroupRouter := requestGroupWeb.NewRequestGroupRouter(mongoDB, sseBroker)
 	requestGroupRouter.RegisterRoutes(mainRouter)
+
+	go sseBroker.Handler()
 
 	addr := fmt.Sprintf("%s:%s", config.Conf.Server.Address, config.Conf.Server.Port)
 	logger.Logger.Info().Msgf("Listening: %s%s", addr, config.Conf.Server.BasePath)

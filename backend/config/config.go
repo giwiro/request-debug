@@ -13,6 +13,9 @@ type Config struct {
 		Address  string
 		BasePath string `mapstructure:"base_path"`
 	}
+	Cors struct {
+		Url []string
+	}
 	Logger struct {
 		Level string
 	}
@@ -21,7 +24,11 @@ type Config struct {
 		DBName string
 	}
 	App struct {
-		Name string
+		Name             string
+		MaxQueries       uint   `mapstructure:"max_queries"`
+		MaxHeaders       uint   `mapstructure:"max_headers"`
+		MaxRequests      uint   `mapstructure:"max_requests"`
+		DashboardBaseUrl string `mapstructure:"dashboard_base_url"`
 	}
 }
 
