@@ -325,6 +325,8 @@ func (vc *RequestGroupController) HandleSSE(c *fiber.Ctx) error {
 					keepAliveTickler.Stop()
 					break
 				}
+			default:
+				logger.Logger.Info().Msgf("No handler")
 			}
 		}
 	})
