@@ -83,7 +83,7 @@ export const RequestGroupStore = signalStore(
 
           patchState(store, {
             isDeleting: true,
-            requestGroup: updatedRequestGroup,
+            requestGroup: {...updatedRequestGroup} as RequestGroup,
           });
         }),
         exhaustMap(({requestGroupId, requestId}) => {

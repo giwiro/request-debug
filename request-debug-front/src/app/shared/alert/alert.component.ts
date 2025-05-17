@@ -6,6 +6,7 @@ import {AlertType} from './model';
   selector: 'app-alert',
   imports: [],
   templateUrl: './alert.component.html',
+  standalone: true,
 })
 export class AlertComponent {
   alertService = inject(AlertService);

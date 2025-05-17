@@ -6,7 +6,7 @@
   <div class="drawer-header !p-4">
     <div class="w-full">
       <label class="label-text" for="searchInput"
-        >Requests ({{ requests()?.length || '0' }}/100)</label
+        >Requests ({{ requests().length || '0' }}/100)</label
       >
       <input
         type="text"
@@ -20,44 +20,41 @@
   <div class="drawer-body custom-drawer-body">
     <div class="flex flex-col-reverse justify-end gap-2">
       @for (request of requests(); track request.id) {
-        <a
-          class="block card card-xs link no-underline hover:bg-gray-100 xl:max-w-sm"
-          [class.bg-gray-300]="requestId() === request.id"
-          [class.hover:bg-gray-300]="requestId() === request.id"
-          [routerLink]="'/dashboard/' + requestGroup()?.id + '/' + request.id">
-          <div class="card-header flex justify-between items-center">
-            <div
-              class="card-title text-ellipsis whitespace-nowrap overflow-hidden flex gap-2 items-center">
-              <app-badge [method]="request.method" />
-              <span>
-                {{ request.ip }}
-              </span>
+        <div class="relative">
+          <button
+            class="tooltip-toggle btn btn-text btn-sm btn-circle relative z-1 top-1 right-1 float-right"
+            aria-label="Delete Button"
+            (click)="handleDelete($event, request)">
+            <span class="icon-[tabler--x] size-5"></span>
+          </button>
+          <a
+            class="block card card-xs link no-underline hover:bg-gray-100 xl:max-w-sm"
+            [class.bg-gray-300]="requestId() === request.id"
+            [class.hover:bg-gray-300]="requestId() === request.id"
+            [routerLink]="
+              '/dashboard/' + store.requestGroup()?.id + '/' + request.id
+            ">
+            <div class="card-header flex justify-between items-center">
+              <div
+                class="card-title text-ellipsis whitespace-nowrap overflow-hidden flex gap-2 items-center">
+                <app-badge [method]="request.method" />
+                <span>
+                  {{ request.ip }}
+                </span>
+              </div>
             </div>
-            <div class="card-actions">
-              <button
-                class="tooltip-toggle btn btn-text btn-sm btn-circle"
-                aria-label="Delete Button"
-                (click)="
-                  store.deleteRequest({
-                    requestGroupId: requestGroup()!.id,
-                    requestId: request.id,
-                  })
-                ">
-                <span class="icon-[tabler--x] size-5"></span>
-              </button>
+            <div class="card-body">
+              <p class="text-ellipsis whitespace-nowrap overflow-hidden">
+                {{ request.id }}
+              </p>
             </div>
-          </div>
-          <div class="card-body">
-            <p class="text-ellipsis whitespace-nowrap overflow-hidden">
-              {{ request.id }}
-            </p>
-          </div>
-          <div class="card-footer text-left">
-            <p class="text-base-content/50">
-              {{ request.date | date: 'short' }}
-            </p>
-          </div>
-        </a>
+            <div class="card-footer text-left">
+              <p class="text-base-content/50">
+                {{ request.date | date: 'short' }}
+              </p>
+            </div>
+          </a>
+        </div>
       }
     </div>
   </div>

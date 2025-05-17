@@ -59,9 +59,7 @@
 </nav>
 
 <div>
-  <app-sidebar
-    [requestGroup]="store.requestGroup()"
-    [requestId]="requestId()" />
+  <app-sidebar [requestId]="requestId()" />
   <section
     class="xl:pl-80 overflow-x-hidden overflow-y-auto xl:h-[calc(100vh-7rem)]">
     @if (store.isLoading()) {

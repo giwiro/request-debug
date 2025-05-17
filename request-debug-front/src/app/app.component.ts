@@ -6,6 +6,7 @@ import {AlertComponent} from './shared/alert/alert.component';
   selector: 'app-root',
   imports: [RouterOutlet, AlertComponent],
   templateUrl: './app.component.html',
+  standalone: true,
 })
 export class AppComponent implements OnInit {
   router = inject(Router);

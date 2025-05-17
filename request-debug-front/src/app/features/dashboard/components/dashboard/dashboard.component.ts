@@ -5,6 +5,7 @@ import {
   OnInit,
   OnDestroy,
   signal,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import {RequestGroupStore} from '../../store/request-group.store';
 import {
@@ -23,9 +24,11 @@ import {Request} from '../../../../core/models';
 
 @Component({
   selector: 'app-dashboard',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [RouterLink, SidebarComponent, RouterOutlet],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css',
+  standalone: true,
 })
 export class DashboardComponent implements OnInit, OnDestroy {
   router = inject(Router);

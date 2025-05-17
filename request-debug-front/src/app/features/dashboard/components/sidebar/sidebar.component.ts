@@ -6,9 +6,10 @@ import {
   OnDestroy,
   computed,
   signal,
+  ChangeDetectionStrategy,
 } from '@angular/core';
-import {RequestGroup} from '../../../../core/models';
-import {RouterLink} from '@angular/router';
+import {Request} from '../../../../core/models';
+import {Router, RouterLink} from '@angular/router';
 import {RequestGroupStore} from '../../store/request-group.store';
 import {BadgeComponent} from '../../../../shared/badge/badge.component';
 import {DatePipe} from '@angular/common';
@@ -16,17 +17,19 @@ import {debounceTime, Subject, Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-sidebar',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [RouterLink, BadgeComponent, DatePipe],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.css',
+  standalone: true,
 })
 export class SidebarComponent implements OnInit, OnDestroy {
   store = inject(RequestGroupStore);
+  router = inject(Router);
   requestId = input.required<string | undefined>();
-  requestGroup = input.required<RequestGroup | null>();
   searchInputValue = signal<string>('');
   requests = computed(() => {
-    const req = this.requestGroup()?.requests;
+    const req = this.store.requestGroup()?.requests;
     const input = this.searchInputValue();
 
     if (input && req) {
@@ -36,7 +39,9 @@ export class SidebarComponent implements OnInit, OnDestroy {
       return [found];
     }
 
-    return req;
+    if (req) return [...req];
+
+    return [];
   });
 
   inputSubject: Subject<string>;
@@ -44,12 +49,6 @@ export class SidebarComponent implements OnInit, OnDestroy {
 
   constructor() {
     this.inputSubject = new Subject();
-  }
-
-  handleInputChange(event: Event) {
-    if (this.inputSubject) {
-      this.inputSubject.next((event.target as HTMLInputElement).value);
-    }
   }
 
   ngOnInit() {
@@ -63,6 +62,28 @@ export class SidebarComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     if (this.input$) {
       this.input$.unsubscribe();
+    }
+  }
+
+  handleDelete(event: Event, request: Request) {
+    const groupId = this.store.requestGroup()!.id;
+
+    this.store.deleteRequest({
+      requestGroupId: groupId,
+      requestId: request.id,
+    });
+
+    this.router
+      .navigate(['/dashboard/', {groupId}])
+      .then(() => console.log(`Redirecting to '/dashboard/${groupId}/'`))
+      .catch(() =>
+        console.log(`Could not redirect to '/dashboard/${groupId}/'`)
+      );
+  }
+
+  handleInputChange(event: Event) {
+    if (this.inputSubject) {
+      this.inputSubject.next((event.target as HTMLInputElement).value);
     }
   }
 }

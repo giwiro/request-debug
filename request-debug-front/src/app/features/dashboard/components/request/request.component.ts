@@ -12,11 +12,12 @@ import {ActivatedRoute} from '@angular/router';
 import {BadgeComponent} from '../../../../shared/badge/badge.component';
 import {DatePipe} from '@angular/common';
 import {DateAgoPipe} from '../../../../shared/date-ago/date-ago.pipe';
+import {BytesToHumanPipe} from '../../../../shared/bytes-to-human/bytes-to-human.pipe';
 
 @Component({
   selector: 'app-request',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [BadgeComponent, DatePipe, DateAgoPipe],
+  imports: [BadgeComponent, DatePipe, DateAgoPipe, BytesToHumanPipe],
   templateUrl: './request.component.html',
   styleUrl: './request.component.css',
 })
@@ -32,6 +33,18 @@ export class RequestComponent implements OnInit {
     }
 
     return undefined;
+  });
+  form = computed(() => {
+    const request = this.request();
+    if (!request || !request.form) return undefined;
+
+    return new Map(Object.entries(request.form));
+  });
+  files = computed(() => {
+    const request = this.request();
+    if (!request || !request.files) return undefined;
+
+    return new Map(Object.entries(request.files));
   });
   headers = computed(() => {
     const request = this.request();

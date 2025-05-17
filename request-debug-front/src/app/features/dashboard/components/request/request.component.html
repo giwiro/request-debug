@@ -108,6 +108,72 @@
 
     <div class="grid grid-cols-1 xl:grid-cols-2 gap-8 items-start mt-5">
       <div>
+        <h5 class="text-base-content text-lg font-semibold mb-2">Form</h5>
+        @if (form()) {
+          <table class="table-striped table-xs table table-fixed">
+            <tbody>
+              @for (f of form(); track f[0]) {
+                <tr>
+                  <td class="w-3/4 sm:w-2/4">
+                    <span class="break-words whitespace-normal">{{
+                      f[0]
+                    }}</span>
+                  </td>
+                  <td
+                    class="w-full overflow-hidden whitespace-nowrap overflow-ellipsis hover:whitespace-normal">
+                    @for (sf of f[1]; track sf) {
+                      <span
+                        class="bg-gray-100 text-gray-800 text-xs font-medium px-1.5 py-0.5 rounded-sm mr-2">
+                        <code>{{ sf }}</code>
+                      </span>
+                    }
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        } @else {
+          <small><code>Empty</code></small>
+        }
+      </div>
+
+      <div>
+        <h5 class="text-base-content text-lg font-semibold mb-2">Files</h5>
+        @if (files()) {
+          <table class="table-striped table-xs table table-fixed">
+            <tbody>
+              @for (f of files(); track f[0]) {
+                <tr>
+                  <td class="w-3/4 sm:w-2/4">
+                    <span class="break-words whitespace-normal">{{
+                      f[0]
+                    }}</span>
+                  </td>
+                  <td
+                    class="w-full overflow-hidden whitespace-nowrap overflow-ellipsis hover:whitespace-normal">
+                    @for (sf of f[1]; track sf) {
+                      <span
+                        class="bg-gray-100 text-gray-800 text-xs font-medium px-1.5 py-0.5 rounded-sm mr-2">
+                        <code
+                          >{{ sf.filename }} ({{
+                            sf.size | bytesToHuman
+                          }})</code
+                        >
+                      </span>
+                    }
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        } @else {
+          <small><code>Empty</code></small>
+        }
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 xl:grid-cols-2 gap-8 items-start mt-5">
+      <div>
         <h5 class="text-base-content text-lg font-semibold mb-2">
           Query Params
         </h5>

@@ -26,8 +26,8 @@
             ],
             "styles": ["src/styles.css"],
             "scripts": [
-              "node_modules/clipboard/dist/clipboard.js",
               "node_modules/flyonui/flyonui.js",
+              "node_modules/clipboard/dist/clipboard.js",
               "node_modules/flyonui/dist/helper-clipboard.js"
             ]
           },
@@ -101,6 +101,9 @@
     }
   },
   "cli": {
-    "schematicCollections": ["angular-eslint"]
+    "schematicCollections": [
+      "angular-eslint"
+    ],
+    "analytics": false
   }
 }

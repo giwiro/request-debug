@@ -144,6 +144,29 @@ func (vc *RequestGroupController) CreateRequest(c *fiber.Ctx) error {
 		}
 	}
 
+	form := map[string][]string{}
+	files := map[string][]model.RequestFile{}
+
+	mp, err := c.MultipartForm()
+	if err == nil {
+		for k, v := range mp.Value {
+			form[k] = v
+		}
+
+		for k, v := range mp.File {
+			var fs []model.RequestFile
+
+			for _, f := range v {
+				fs = append(fs, model.RequestFile{
+					Filename: f.Filename,
+					Size:     f.Size,
+				})
+			}
+
+			files[k] = fs
+		}
+	}
+
 	request := &model.Request{
 		Id:          uuid.New().String(),
 		Method:      c.Method(),
@@ -153,6 +176,8 @@ func (vc *RequestGroupController) CreateRequest(c *fiber.Ctx) error {
 		BodyRaw:     string(bodyRaw),
 		Date:        time.Now().UTC(),
 		Ip:          c.IP(),
+		Form:        form,
+		Files:       files,
 		QueryParams: c.Queries(),
 		Headers:     headers,
 	}
