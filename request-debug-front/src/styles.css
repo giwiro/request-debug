@@ -1,8 +1,22 @@
 @import "tailwindcss";
+@plugin "@iconify/tailwind4";
 @import "flyonui/variants.css";
 @source "../node_modules/flyonui/flyonui.js";
-@plugin "@iconify/tailwind4";
 @plugin "flyonui" {
   themes: light --default, dark --prefersdark;
 }
 
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+@theme {
+  --color-night-blue: #1A2231;
+  --color-midnight: #2A3441;
+}
+
+:root {
+  --color-primary: #4F46E5;
+  --divider-color: var(--color-gray-100)
+}
+
+[data-theme="dark"] {
+  --color-primary: #6366F1;
+}

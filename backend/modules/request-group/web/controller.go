@@ -326,7 +326,7 @@ func (vc *RequestGroupController) HandleSSE(c *fiber.Ctx) error {
 					break
 				}
 			default:
-				logger.Logger.Info().Msgf("No handler")
+				// logger.Logger.Info().Msgf("No SSE controller handler")
 			}
 		}
 	})

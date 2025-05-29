@@ -118,7 +118,7 @@ func (s *sseBroker) Handler() {
 			s.clientsLock.Unlock()
 
 		default:
-			logger.Logger.Info().Msgf("No handler")
+			// logger.Logger.Info().Msgf("No SSE broker handler")
 		}
 
 	}

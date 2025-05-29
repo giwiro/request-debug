@@ -1,4 +1,5 @@
 import {Injectable, signal, effect} from '@angular/core';
+import {localStorage} from '../../../../shared/utils/local-storage';
 
 const STORED_REQUEST_GROUP_ID_KEY = 'STORED_REQUEST_GROUP_ID_KEY';
 
@@ -7,7 +8,7 @@ const STORED_REQUEST_GROUP_ID_KEY = 'STORED_REQUEST_GROUP_ID_KEY';
 })
 export class StoredGroupService {
   private requestGroupId = signal<string | null>(
-    window.localStorage.getItem(STORED_REQUEST_GROUP_ID_KEY)
+    localStorage.getItem(STORED_REQUEST_GROUP_ID_KEY)
   );
 
   private _ = effect(() => {

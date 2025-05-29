@@ -1,6 +1,8 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, effect, inject, OnInit} from '@angular/core';
 import {NavigationEnd, Router, RouterOutlet} from '@angular/router';
 import {AlertComponent} from './shared/alert/alert.component';
+import {ThemeStore} from './features/dashboard/store/theme.store';
+import {DOCUMENT} from '@angular/common';
 
 @Component({
   selector: 'app-root',
@@ -10,6 +12,18 @@ import {AlertComponent} from './shared/alert/alert.component';
 })
 export class AppComponent implements OnInit {
   router = inject(Router);
+  document = inject(DOCUMENT);
+  themeStore = inject(ThemeStore);
+
+  private _ = effect(() => {
+    const t = this.themeStore.theme();
+
+    const h = document.getElementsByTagName('html')[0];
+
+    if (h) {
+      h.setAttribute('data-theme', t);
+    }
+  });
 
   ngOnInit() {
     this.router.events.subscribe(event => {

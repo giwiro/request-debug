@@ -21,6 +21,7 @@ import {EventSourceService} from '../../../../core/sse/event-source.service';
 import {join} from '../../../../shared/utils/path';
 import {environment} from '../../../../../environments/environment';
 import {Request} from '../../../../core/models';
+import {ThemeStore} from '../../store/theme.store';
 
 @Component({
   selector: 'app-dashboard',
@@ -33,6 +34,7 @@ import {Request} from '../../../../core/models';
 export class DashboardComponent implements OnInit, OnDestroy {
   router = inject(Router);
   store = inject(RequestGroupStore);
+  themeStore = inject(ThemeStore);
   activatedRoute = inject(ActivatedRoute);
   groupId = signal<string | undefined>(undefined);
   requestId = signal<string | undefined>(undefined);

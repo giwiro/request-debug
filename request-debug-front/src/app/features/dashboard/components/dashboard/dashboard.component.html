@@ -1,67 +1,86 @@
-<nav class="navbar z-10 relative">
-  <div class="w-full md:flex md:items-center md:gap-2">
-    <div class="flex items-center justify-between">
-      <div class="navbar-start items-center justify-between max-md:w-full">
-        <a
-          class="link text-base-content link-neutral text-xl font-bold no-underline"
-          [routerLink]="'/'"
-          >RequestDebug</a
-        >
-      </div>
-    </div>
-  </div>
-</nav>
-<nav class="navbar bg-base-100 shadow-sm xl:z-1 relative">
-  <button
-    type="button"
-    class="btn btn-text max-sm:btn-square xl:hidden me-2"
-    aria-haspopup="dialog"
-    aria-expanded="false"
-    aria-controls="with-navbar-sidebar"
-    data-overlay="#with-navbar-sidebar">
-    <span class="icon-[tabler--menu-2] size-5"></span>
-  </button>
-  <div class="flex flex-1 items-center">
-    <div class="breadcrumbs">
-      <ul>
-        <li aria-current="page">
-          <a class="text-base-content text-sm" [routerLink]="'/'"> Home </a>
-        </li>
-        <li class="breadcrumbs-separator rtl:rotate-180">
-          <span class="icon-[tabler--chevron-right]"></span>
-        </li>
-        <li>
-          <a
-            class="text-base-content text-sm overflow-hidden whitespace-nowrap overflow-ellipsis max-w-20 sm:max-w-none !inline-block"
-            [class.font-semibold]="!requestId()"
-            [routerLink]="'/dashboard/' + groupId()">
-            {{ groupId() }}
-          </a>
-        </li>
-        @if (requestId()) {
-          <li class="breadcrumbs-separator rtl:rotate-180">
-            <span class="icon-[tabler--chevron-right]"></span>
-          </li>
-        }
-        <li aria-current="page">
-          <span
-            class="text-base-content text-sm font-semibold overflow-hidden whitespace-nowrap overflow-ellipsis max-w-20 sm:max-w-none !inline-block">
-            {{ requestId() }}
-          </span>
-        </li>
-      </ul>
-    </div>
-    <!--<span
-      class="text-base-content text-sm font-semibold">
-      {{ groupId }}
-    </span>-->
-  </div>
-</nav>
-
 <div>
   <app-sidebar [requestId]="requestId()" />
   <section
-    class="xl:pl-80 overflow-x-hidden overflow-y-auto xl:h-[calc(100vh-7rem)]">
+    class="xl:pl-80 overflow-x-hidden overflow-y-auto xl:h-screen bg-white dark:bg-gray-800">
+    <nav class="navbar z-10 relative bg-white dark:bg-gray-800">
+      <div class="w-full flex justify-between md:gap-2">
+        <div class="flex items-center justify-between">
+          <div class="navbar-start items-center justify-between max-md:w-full">
+            <a
+              class="link text-base-content link-neutral text-xl font-bold no-underline"
+              [routerLink]="'/'"
+              >RequestDebug</a
+            >
+          </div>
+        </div>
+        <div>
+          @if (themeStore.theme() === 'light') {
+            <button
+              class="btn btn-circle btn-soft btn-primary"
+              aria-label="Theme change"
+              (click)="themeStore.updateThemeState('dark')">
+              <span class="icon-[tabler--moon] size-4.5 shrink-0"></span>
+            </button>
+          }
+          @if (themeStore.theme() === 'dark') {
+            <button
+              class="btn btn-circle btn-soft btn-primary"
+              aria-label="Theme change"
+              (click)="themeStore.updateThemeState('light')">
+              <span class="icon-[tabler--sun] size-4.5 shrink-0"></span>
+            </button>
+          }
+        </div>
+      </div>
+    </nav>
+    <nav
+      class="navbar shadow-xs xl:z-1 relative border-b-gray-200 border-b dark:border-b-slate-700 bg-white dark:bg-gray-800">
+      <button
+        type="button"
+        class="btn btn-text max-sm:btn-square xl:hidden me-2"
+        aria-haspopup="dialog"
+        aria-expanded="false"
+        aria-controls="with-navbar-sidebar"
+        data-overlay="#with-navbar-sidebar">
+        <span class="icon-[tabler--menu-2] size-5"></span>
+      </button>
+      <div class="flex flex-1 items-center">
+        <div class="breadcrumbs">
+          <ul>
+            <li aria-current="page">
+              <a class="text-base-content text-sm" [routerLink]="'/'"> Home </a>
+            </li>
+            <li class="breadcrumbs-separator rtl:rotate-180">
+              <span class="icon-[tabler--chevron-right]"></span>
+            </li>
+            <li>
+              <a
+                class="text-base-content text-sm overflow-hidden whitespace-nowrap overflow-ellipsis max-w-20 sm:max-w-none !inline-block"
+                [class.font-semibold]="!requestId()"
+                [routerLink]="'/dashboard/' + groupId()">
+                {{ groupId() }}
+              </a>
+            </li>
+            @if (requestId()) {
+              <li class="breadcrumbs-separator rtl:rotate-180">
+                <span class="icon-[tabler--chevron-right]"></span>
+              </li>
+            }
+            <li aria-current="page">
+              <span
+                class="text-base-content text-sm font-semibold overflow-hidden whitespace-nowrap overflow-ellipsis max-w-20 sm:max-w-none !inline-block">
+                {{ requestId() }}
+              </span>
+            </li>
+          </ul>
+        </div>
+        <!--<span
+          class="text-base-content text-sm font-semibold">
+          {{ groupId }}
+        </span>-->
+      </div>
+    </nav>
+
     @if (store.isLoading()) {
       <section class="!pt-24 p-6 xl:p-12 flex justify-center">
         <span class="loading loading-spinner loading-xl"></span>
