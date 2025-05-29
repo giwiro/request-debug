@@ -1,9 +1,9 @@
 <aside
   id="with-navbar-sidebar"
-  class="overlay z-11 overlay-open:translate-x-0 bg-gray-50 dark:bg-night-blue shadow-none drawer drawer-start hidden max-w-80 xl:absolute xl:flex xl:translate-x-0 border-r border-gray-200 dark:border-slate-700"
+  class="overlay z-11 overlay-open:translate-x-0 bg-gray-50 dark:bg-night-blue shadow-none drawer drawer-start hidden max-w-100 xl:absolute xl:flex xl:translate-x-0 border-r border-gray-200 dark:border-slate-700"
   role="dialog"
   tabindex="-1">
-  <div class="drawer-header !px-4 !pt-6 !pb-8">
+  <div class="drawer-header !px-6 !pt-6 !pb-8">
     <div class="w-full">
       <label class="label-text" for="searchInput"
         >Requests ({{ requests().length || '0' }}/100)</label
@@ -18,8 +18,8 @@
   </div>
   <div
     class="divider before:border-gray-200 after:border-gray-200 dark:before:border-slate-800 dark:after:border-slate-800"></div>
-  <div class="drawer-body custom-drawer-body">
-    <div class="flex flex-col-reverse justify-end gap-2">
+  <div class="drawer-body custom-drawer-body !px-6">
+    <div class="flex flex-col-reverse justify-end gap-4">
       @for (request of requests(); track request.id) {
         <div class="relative">
           <button
@@ -30,10 +30,13 @@
           </button>
           <a
             class="block card card-xs link no-underline xl:max-w-sm dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600"
+            [class.border]="requestId() === request.id"
             [class.bg-gray-200]="requestId() === request.id"
+            [class.border-gray-200]="requestId() === request.id"
             [class.hover:bg-gray-200]="requestId() === request.id"
-            [class.dark:bg-gray-700]="requestId() === request.id"
-            [class.dark:hover:bg-gray-700]="requestId() === request.id"
+            [class.dark:border-slate-700]="requestId() === request.id"
+            [class.dark:bg-gray-800]="requestId() === request.id"
+            [class.dark:hover:bg-gray-800]="requestId() === request.id"
             [routerLink]="
               '/dashboard/' + store.requestGroup()?.id + '/' + request.id
             ">

@@ -12,11 +12,18 @@
   --color-midnight: #2A3441;
 }
 
+[data-theme="dark"] .table-striped tbody tr:nth-child(even) {
+  background-color: var(--color-gray-700);
+}
+
 :root {
   --color-primary: #4F46E5;
-  --divider-color: var(--color-gray-100)
+  --divider-color: var(--color-gray-100);
+  --root-bg: white;
 }
 
 [data-theme="dark"] {
   --color-primary: #6366F1;
+  --color-accent: #6366F1;
+  --root-bg: var(--color-gray-800);
 }

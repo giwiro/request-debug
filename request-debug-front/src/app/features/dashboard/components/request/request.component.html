@@ -208,10 +208,10 @@
       class="divider my-10 before:border-gray-200 after:border-gray-200 dark:before:border-slate-900 dark:after:border-slate-900"></div>
 
     <div class="mt-5">
-      <h5 class="text-base-content text-lg font-semibold">Raw content</h5>
+      <h5 class="text-base-content text-lg font-semibold mb-2">Raw content</h5>
 
       @if (request()?.bodyRaw) {
-        <div class="mockup-code before:content-none">
+        <div class="mockup-code before:content-none !px-6">
           <pre><code>{{ request()?.bodyRaw }}</code></pre>
         </div>
       } @else {
