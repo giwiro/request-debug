@@ -64,9 +64,9 @@ func (s *sseBroker) BroadcastGroup(id string, message []byte) {
 		return
 	}
 
-	fmt.Println("BROADCASTING", len(s.clients[id]))
+	// fmt.Println("BROADCASTING", len(s.clients[id]))
 	for ch, _ := range s.clients[id] {
-		fmt.Println(">", message)
+		// fmt.Println(">", message)
 		ch <- message
 	}
 }
